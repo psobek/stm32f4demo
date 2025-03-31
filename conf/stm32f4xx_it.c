@@ -23,6 +23,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_it.h"
+#include "irq.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -155,6 +156,7 @@ void SysTick_Handler(void)
 
 void TIM1_UP_TIM10_IRQHandler(void)
 {
+  TIM1_Interrupt_Handler();
 }
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
