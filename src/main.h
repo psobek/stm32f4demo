@@ -11,7 +11,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
-
 #include "stm32f4xx_rcc.h"
+
+#include "appConfig.h"
 
 #endif /* MAIN_H_ */
