@@ -51,6 +51,7 @@ endif()
 include_directories(
     ./src
     ./conf/
+    ./src/engine/
     ./headers/
     ./lib/CMSIS/inc
     ./lib/STM32F4xx_StdPeriph_Driver/inc/
@@ -59,6 +60,7 @@ include_directories(
 file(GLOB headers
     "./src/*.h"
     "./conf/*.h"
+    "./src/engine/*.h"
     "./headers/*.h"
     "./lib/CMSIS/inc/*.h"
     "./lib/STM32F4xx_StdPeriph_Driver/inc/*.h"
@@ -67,6 +69,7 @@ file(GLOB headers
 file(GLOB sources
     "./src/*.c"
     "./conf/*.c"
+    "./src/engine/*.c"
     "./headers/*.c"
     "./lib/CMSIS/src/*.c"
     "./lib/STM32F4xx_StdPeriph_Driver/src/*.c"
