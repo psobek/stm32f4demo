@@ -77,16 +77,50 @@ void init_gpio(void)
 	GPIO_Init(GPIOD, &GPIO_InitStructure);
 }
 
+void init_usart(void)
+{
+	GPIO_InitTypeDef GPIO_InitStructure;
+	GPIO_StructInit(&GPIO_InitStructure);
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_11;
+	GPIO_InitStructure.GPIO_Speed = GPIO_High_Speed;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIO_DeInit(GPIOC);
+	GPIO_PinAFConfig(GPIOC, GPIO_PinSource10, GPIO_AF_USART3);
+	GPIO_Init(GPIOC, &GPIO_InitStructure);
+
+	USART_DeInit(USART3);
+	USART_InitTypeDef USART_InitStructure;
+	USART_StructInit(&USART_InitStructure);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
+
+	USART_InitStructure.USART_BaudRate = 115200;
+	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+	USART_InitStructure.USART_Mode = USART_Mode_Tx;
+	USART_InitStructure.USART_Parity = USART_Parity_No;
+	USART_InitStructure.USART_StopBits = 1;
+	USART_InitStructure.USART_WordLength = 8;
+	USART_Init(USART3, &USART_InitStructure);
+	USART_Cmd(USART3, ENABLE);
+}
+
 void init(void)
 {
 	init_clock();
 	init_gpio();
 	init_timers();
+	init_usart();
 }
 
 int main(void)
 {
 	init();
+
+	debug("Reboot");
+	debug("CPU Frequency:");
+	debugint(CPU_FREQ);
+
 	while (1)
 	{
 	}
