@@ -16,4 +16,6 @@
 
 #include "appConfig.h"
 
+void init(void);
+
 #endif /* INIT_H_ */
