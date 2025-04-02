@@ -37,7 +37,7 @@ void debughex(uint32_t data)
 void debugint(uint32_t data)
 {
     char buf[100];
-    snprintf(buf, sizeof(buf), "%08ld", data);
+    snprintf(buf, sizeof(buf), "%ld", data);
     debug(buf);
 }
 

@@ -105,10 +105,40 @@ void init_usart(void)
     USART_Cmd(USART3, ENABLE);
 }
 
+void init_i2c(void)
+{
+    /* initializes I2C1 on PB8 (SCL) & PB9 (SDA) Pins*/
+    GPIO_InitTypeDef GPIO_InitStructure;
+    I2C_InitTypeDef I2C_InitStructure;
+
+    GPIO_DeInit(GPIOB);
+    GPIO_StructInit(&GPIO_InitStructure);
+    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
+
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_7;
+    GPIO_InitStructure.GPIO_Speed = GPIO_High_Speed;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+    GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
+    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+    GPIO_PinAFConfig(GPIOB, GPIO_PinSource8, GPIO_AF_I2C1);
+    GPIO_PinAFConfig(GPIOB, GPIO_PinSource7, GPIO_AF_I2C1);
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
+
+    I2C_DeInit(I2C1);
+    I2C_StructInit(&I2C_InitStructure);
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
+
+    I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
+    I2C_InitStructure.I2C_ClockSpeed = 400000;
+    I2C_Init(I2C1, &I2C_InitStructure);
+    I2C_Cmd(I2C1, ENABLE);
+}
+
 void init(void)
 {
     init_clock();
     init_gpio();
     init_timers();
     init_usart();
+    init_i2c();
 }

@@ -17,6 +17,8 @@ int main(void)
 
 	while (1)
 	{
+		th06_cycle();
+		delay_ms(5000);
 	}
 	return 0;
 }

@@ -14,7 +14,9 @@
 #include "misc.h"
 
 #include "appConfig.h"
+#include "time.h"
 #include "utils.h"
 #include "init.h"
+#include "th06.h"
 
 #endif /* MAIN_H_ */
