@@ -5,11 +5,11 @@
  *      Author: psobek
  */
 
+#include "time.h"
 #include "irq.h"
 
 static uint32_t counter = 0;
 static uint8_t led_state = 0;
-uint8_t oled_action_flag = 0;
 
 void toggle_led()
 {
@@ -28,11 +28,12 @@ void toggle_led()
 void TIM1_Interrupt_Handler(void)
 {
     TIM_ClearFlag(TIM1, TIM_FLAG_Update);
+
+    systick();
     counter++;
     if (counter == TIM1_FREQ)
     {
         counter = 0;
-        oled_action_flag = 1; // set oled action flag once per second
     }
 
     if (counter == 0)
