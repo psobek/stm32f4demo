@@ -13,6 +13,8 @@
 #include <stdint.h>
 #include "misc.h"
 
+#include "FreeRTOS.h"
+
 #include "appConfig.h"
 #include "time.h"
 #include "utils.h"

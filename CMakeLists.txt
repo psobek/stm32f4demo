@@ -30,9 +30,9 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     -DUSE_STDPERIPH_DRIVER
     -DDEBUG
     -O0 -g3 -ggdb -Wall
-    -c -mthumb -mcpu=cortex-m4 -mtune=cortex-m4 -fdata-sections -ffunction-sections
+    -c -mthumb -mcpu=cortex-m4 -mtune=cortex-m4 -mfloat-abi=hard -mfpu=auto -fdata-sections -ffunction-sections
   )
-  set(CMAKE_EXE_LINKER_FLAGS "-T ./conf/stm32_flash.ld -mthumb -mcpu=cortex-m4 -mtune=cortex-m4 -Wl,-Map=linker.map -Wl,-cref -Wl,--gc-sections -Wl,-lc -specs=nosys.specs -specs=nano.specs")
+  set(CMAKE_EXE_LINKER_FLAGS "-T ./conf/stm32_flash.ld -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=auto -mtune=cortex-m4 -Wl,-Map=linker.map -Wl,-cref -Wl,--gc-sections -Wl,-lc -specs=nosys.specs -specs=nano.specs")
 
 endif()
 
@@ -42,9 +42,9 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
     -DUSE_STDPERIPH_DRIVER
     -DNDEBUG
     -O3 -Wall
-    -c -mthumb -mcpu=cortex-m4 -mtune=cortex-m4 -fdata-sections -ffunction-sections
+    -c -mthumb -mcpu=cortex-m4 -mtune=cortex-m4 -mfloat-abi=hard -mfpu=auto -fdata-sections -ffunction-sections
   )
-  set(CMAKE_EXE_LINKER_FLAGS "-T ./conf/stm32_flash.ld -mthumb -mcpu=cortex-m4 -mtune=cortex-m4 -Wl,-Map=linker.map -Wl,-cref -Wl,--strip-all -Wl,--gc-sections -Wl,-lc -specs=nosys.specs -specs=nano.specs")
+  set(CMAKE_EXE_LINKER_FLAGS "-T ./conf/stm32_flash.ld -mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=auto -mtune=cortex-m4 -Wl,-Map=linker.map -Wl,-cref -Wl,--strip-all -Wl,--gc-sections -Wl,-lc -specs=nosys.specs -specs=nano.specs")
 
 endif()
 
@@ -55,6 +55,9 @@ include_directories(
     ./headers/
     ./lib/CMSIS/inc
     ./lib/STM32F4xx_StdPeriph_Driver/inc/
+    ./FreeRTOS/Source/include/
+    ./FreeRTOS/Source/
+    ./FreeRTOS/Source/portable/GCC/ARM_CM4F/
 )
 
 file(GLOB headers
@@ -64,6 +67,8 @@ file(GLOB headers
     "./headers/*.h"
     "./lib/CMSIS/inc/*.h"
     "./lib/STM32F4xx_StdPeriph_Driver/inc/*.h"
+    "./FreeRTOS/Source/include/*.h"
+    "./FreeRTOS/Source/portable/GCC/ARM_CM4F/*.h"
 )
 
 file(GLOB sources
@@ -74,6 +79,11 @@ file(GLOB sources
     "./lib/CMSIS/src/*.c"
     "./lib/STM32F4xx_StdPeriph_Driver/src/*.c"
     "./lib/CMSIS/src/*.S"
+    "./FreeRTOS/Source/tasks.c"
+    "./FreeRTOS/Source/queue.c"
+    "./FreeRTOS/Source/list.c"
+    "./FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c"
+    "./FreeRTOS/Source/portable/MemMang/heap_2.c"
 )
 
 add_executable(${PROJECT_NAME} ${sources})
