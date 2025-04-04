@@ -14,6 +14,8 @@
 #include "misc.h"
 
 #include "FreeRTOS.h"
+#include "queue.h"
+#include "semphr.h"
 
 #include "appConfig.h"
 #include "time.h"

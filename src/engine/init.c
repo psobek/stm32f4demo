@@ -50,13 +50,13 @@ void init_timers(void)
     TIM_TimeBaseInit(TIM1, &TIM_TimeBaseInitStruct);
 
     // Clear update interrupt bit
-    TIM_ClearITPendingBit(TIM1, TIM_FLAG_Update);
+    TIM_ClearITPendingBit(TIM1, TIM_IT_Update);
     // Enable update interrupt
-    TIM_ITConfig(TIM1, TIM_FLAG_Update, ENABLE);
+    TIM_ITConfig(TIM1, TIM_IT_Update, ENABLE);
 
     NVIC_InitStructure.NVIC_IRQChannel = TIM1_UP_TIM10_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 9;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
 
@@ -75,11 +75,14 @@ void init_gpio(void)
     GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
     GPIO_DeInit(GPIOD);
     GPIO_Init(GPIOD, &GPIO_InitStructure);
+    GPIO_SetBits(GPIOD, GPIO_Pin_15);
 }
 
 void init_usart(void)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
+    NVIC_InitTypeDef NVIC_InitStructure;
+
     GPIO_StructInit(&GPIO_InitStructure);
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_11;
@@ -102,7 +105,18 @@ void init_usart(void)
     USART_InitStructure.USART_StopBits = 1;
     USART_InitStructure.USART_WordLength = 8;
     USART_Init(USART3, &USART_InitStructure);
+
+    // Clear TC interrupt bit
+    USART_ClearITPendingBit(USART3, USART_IT_TC);
+
+    NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 10;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+    NVIC_Init(&NVIC_InitStructure);
+    // Enable TXE interrupt
     USART_Cmd(USART3, ENABLE);
+    USART_ITConfig(USART3, USART_IT_TC, ENABLE);
 }
 
 void init_i2c(void)
@@ -136,6 +150,7 @@ void init_i2c(void)
 
 void init(void)
 {
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
     init_clock();
     init_gpio();
     init_timers();

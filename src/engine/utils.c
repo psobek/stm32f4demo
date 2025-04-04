@@ -7,24 +7,14 @@
 
 #include "utils.h"
 
-void led_on(void)
-{
-    GPIOD->ODR |= GPIO_Pin_15;
-}
-
-void led_off(void)
-{
-    GPIOD->ODR &= ~GPIO_Pin_15;
-}
+extern QueueHandle_t usartQueue;
 
 void pchar(char c)
 {
-    while (USART_GetFlagStatus(USART3, USART_FLAG_TXE) == RESET)
+    // GPIO_SetBits(GPIOD, GPIO_Pin_15);
+    if (xQueueSendToBack(usartQueue, (void *)&c, (TickType_t)10) != pdPASS)
     {
     }
-    led_on();
-    USART_SendData(USART3, c);
-    led_off();
 }
 
 void debughex(uint32_t data)

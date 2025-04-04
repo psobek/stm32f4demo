@@ -3,6 +3,9 @@
 
 #include <stdio.h>
 
+#include "FreeRTOS.h"
+#include "queue.h"
+
 #include "stm32f4xx_usart.h"
 #include "stm32f4xx_gpio.h"
 
