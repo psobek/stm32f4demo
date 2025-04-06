@@ -83,7 +83,7 @@ file(GLOB sources
     "./FreeRTOS/Source/queue.c"
     "./FreeRTOS/Source/list.c"
     "./FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c"
-    "./FreeRTOS/Source/portable/MemMang/heap_2.c"
+    "./FreeRTOS/Source/portable/MemMang/heap_4.c"
 )
 
 add_executable(${PROJECT_NAME} ${sources})
