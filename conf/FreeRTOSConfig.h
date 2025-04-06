@@ -42,6 +42,8 @@
 /* Ensure stdint is only used by the compiler, and not the assembler. */
 #include <stdint.h>
 extern uint32_t SystemCoreClock;
+extern void init_timers(void);
+extern uint32_t get_hf_ticks(void);
 
 #define configUSE_PREEMPTION 1
 #define configUSE_IDLE_HOOK 0
@@ -62,7 +64,11 @@ extern uint32_t SystemCoreClock;
 #define configUSE_MALLOC_FAILED_HOOK 0
 #define configUSE_APPLICATION_TASK_TAG 0
 #define configUSE_COUNTING_SEMAPHORES 1
-#define configGENERATE_RUN_TIME_STATS 0
+#define configGENERATE_RUN_TIME_STATS 1
+#define configUSE_STATS_FORMATTING_FUNCTIONS 1
+#define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS init_timers
+#define portGET_RUN_TIME_COUNTER_VALUE get_hf_ticks
+#define configRUN_TIME_COUNTER_TYPE uint32_t
 
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES 0

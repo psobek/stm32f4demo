@@ -75,7 +75,32 @@ void UsartAgentTask(void *pvParameters)
 				xSemaphoreGive(usartSemaphore);
 			}
 		}
-		//
+	}
+}
+
+void HeavyTask(void *pvParameters)
+{
+	while (1)
+	{
+		int y = 1;
+		for (int i = 0; i < 10000; i++)
+		{
+			y *= (i + 1) / 5;
+		}
+		// debugint(y);
+		vTaskDelay(10 / portTICK_PERIOD_MS);
+	}
+}
+
+void StatsTask(void *pvParameters)
+{
+	char buffer[500];
+	while (1)
+	{
+		// print stats roughly every 5 seconds
+		vTaskDelay(5000 / portTICK_PERIOD_MS);
+		vTaskGetRunTimeStatistics(buffer, sizeof(buffer));
+		debug(buffer);
 	}
 }
 
@@ -86,11 +111,13 @@ int main(void)
 	SystemCoreClockUpdate();
 	usartQueue = xQueueCreate(1024, 1);
 	vSemaphoreCreateBinary(usartSemaphore);
-	xTaskCreate(TaskBlink1, "Task1", 128, NULL, 1, NULL);
-	xTaskCreate(TaskBlink2, "Task2", 128, NULL, 1, NULL);
-	xTaskCreate(TaskBlink3, "Task3", 128, NULL, 1, NULL);
-	xTaskCreate(TaskBlink4, "Task4", 128, NULL, 1, NULL);
+	xTaskCreate(TaskBlink1, "LED1", 128, NULL, 3, NULL);
+	xTaskCreate(TaskBlink2, "LED2", 128, NULL, 3, NULL);
+	xTaskCreate(TaskBlink3, "LED3", 128, NULL, 3, NULL);
+	xTaskCreate(TaskBlink4, "LED4", 128, NULL, 3, NULL);
 	xTaskCreate(UsartAgentTask, "USARTAgent", 128, NULL, 3, NULL);
+	xTaskCreate(StatsTask, "Stats", 1128, NULL, 4, NULL);
+	xTaskCreate(HeavyTask, "Heavy", 128, NULL, 2, NULL);
 	debug("Reboot");
 	debug("CPU Frequency:");
 	debugint(SystemCoreClock);

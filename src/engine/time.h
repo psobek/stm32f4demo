@@ -10,6 +10,9 @@
 
 #include <stdint.h>
 
+#include "appConfig.h"
+
 void systick(void); // systick function should run in 1000Hz interrupt
-void delay_ms(uint32_t milliseconds);
+uint32_t get_hf_ticks(void);
+
 #endif /* TIME_H_ */

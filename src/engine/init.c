@@ -148,12 +148,16 @@ void init_i2c(void)
     I2C_Cmd(I2C1, ENABLE);
 }
 
+void portCONFIGURE_TIMER_FOR_RUN_TIME_STATS(void)
+{
+    init_timers();
+}
 void init(void)
 {
     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
     init_clock();
     init_gpio();
-    init_timers();
+    // init_timers();
     init_usart();
     init_i2c();
 }

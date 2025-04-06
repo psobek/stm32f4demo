@@ -13,13 +13,13 @@ void th06_cycle(void)
 {
     // measure RH
     th06_send_command(TH06_CONVERT_HUMIDITY_NO_HOLD);
-    delay_ms(25);
+    // delay_ms(25);
     uint32_t h = th06_read_humidity();
     debug("Humidity:");
     debugint(h);
     // measure T
     th06_send_command(TH06_CONVERT_TEMPERATURE_NO_HOLD);
-    delay_ms(25);
+    // delay_ms(25);
     uint32_t t = th06_read_temp();
     debug("Temperature:");
     debugint(t);
